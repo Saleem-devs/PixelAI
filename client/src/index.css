@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @import url("https://fonts.googleapis.com/css2?family=Cantarell:wght@400;700&family=Michroma&display=swap");
+
+* {
+  font-family: "Cantarell", sans-serif;
+} */
+.page_container {
+  width: 90%;
+  margin: auto;
+}
+
+/* font-family: 'Michroma', sans-serif;  */
