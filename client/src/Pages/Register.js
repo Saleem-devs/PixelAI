@@ -20,6 +20,7 @@ function Register() {
 
     if (password !== confirmPassword) {
       setErrorMessage("Passwords don't match");
+      setLoading(false);
     } else {
       try {
         await createUserWithEmailAndPassword(auth, email, password);

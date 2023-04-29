@@ -1,35 +1,117 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import withAuthProtection from "../HOC/withAuthProtection";
 import Nav from "../Components/Nav";
 import Preview from "../Images/preview.png";
 import { getRandomPrompt } from "../randomPrompts";
 import FormField from "../Components/FormField";
 import Loader from "../Components/Loader";
-import { useNavigate } from "react-router-dom";
+import { SnackbarContext } from "../SnackbarContext";
+import { auth, db } from "../Config/firebase";
+import { addDoc, collection } from "firebase/firestore";
+import { Link } from "react-router-dom";
 
 function CreateImage() {
-  const navigate = useNavigate();
   const [form, setForm] = useState({
     prompt: "",
     photo: "",
   });
   const [generatingImg, setGeneratingImg] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [customPrompt, setCustomPrompt] = useState("");
+  const [imgGenerated, setImgGenerated] = useState(false);
+
+  const photosCollectionRef = collection(db, "Saved Images");
+  const { setSnackbarText } = useContext(SnackbarContext);
 
   function handleSubmit() {}
   function handleChange(e) {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setCustomPrompt(e.target.value);
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
   }
   function handleRandomPrompt() {
     const randomPrompt = getRandomPrompt(form.prompt);
     setForm({ ...form, prompt: randomPrompt });
   }
-  function generateImg() {}
+  async function generateImg(e) {
+    e.preventDefault();
+    if (form.prompt || customPrompt) {
+      try {
+        setGeneratingImg(true);
+        const response = await fetch("http://localhost:8080/api/v1/dalle", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            prompt: form.prompt || customPrompt,
+          }),
+        });
+
+        const data = await response.json();
+
+        setForm({ ...form, photo: data.photo });
+        setImgGenerated(true);
+      } catch (error) {
+        setSnackbarText({
+          open: true,
+          message: `${error}`,
+          success: false,
+        });
+      } finally {
+        setGeneratingImg(false);
+      }
+    } else {
+      setSnackbarText({
+        open: true,
+        message: "Enter a prompt or get random prompt",
+        success: false,
+      });
+    }
+  }
+
+  async function saveImage(e) {
+    e.preventDefault();
+    if (imgGenerated) {
+      try {
+        setLoading(true);
+        await addDoc(photosCollectionRef, {
+          image: form.photo,
+          prompt: form.prompt || customPrompt,
+          userId: auth?.currentUser?.uid,
+        });
+
+        setSnackbarText({
+          open: true,
+          message: "Image successfully saved.",
+          linkText: "Go to dashboard",
+          success: true,
+        });
+      } catch (error) {
+        setSnackbarText({
+          open: true,
+          message: `${error}`,
+          success: false,
+        });
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setSnackbarText({
+        open: true,
+        message: "Generate an image",
+        success: false,
+      });
+    }
+  }
 
   return (
     <>
       <section className="bg-[#f9fafc]">
         <Nav />
+        <div className="page_container pt-8 underline  text-[#666e75] hover:text-primary">
+          <Link to="/dashboard">Go to dashboard</Link>
+        </div>
         <main className="page_container max-w-7xl py-14">
           <div>
             <h1 className="font-bold text-[27px] md:text-3xl">
@@ -47,22 +129,11 @@ function CreateImage() {
                 type="text"
                 name="prompt"
                 placeholder="A 3D render of a futuristic hoverbike speeding through a neon-lit city"
-                value={form.prompt}
+                value={customPrompt ? customPrompt : form.prompt}
                 handleChange={handleChange}
                 isRandomPrompt
                 handleRandomPrompt={handleRandomPrompt}
               />
-
-              <div>
-                <span className="block text-sm font-medium text-gray-900  ">
-                  Size
-                </span>
-                <div className="flex items-end gap-3">
-                  <FormField type="number" name="width" value={form.name} />
-                  <p className="self-center">x</p>
-                  <FormField type="number" name="height" value={form.name} />
-                </div>
-              </div>
 
               <div className="relative bg-white border text-gray-900 text-sm rounded-md flex justify-center items-center w-64 h-64 p-3">
                 {form.photo ? (
@@ -103,8 +174,9 @@ function CreateImage() {
                 access and view it anytime in the future.
               </p>
               <button
+                onClick={saveImage}
                 type="submit"
-                className="mt-3 font-medium text-white py-1.5 px-4 bg-gray-600 w-full sm:w-auto rounded-md"
+                className="my-3 font-medium text-white py-1.5 px-4 bg-gray-600 w-full sm:w-auto rounded-md"
               >
                 {loading ? "Saving..." : "Save"}
               </button>

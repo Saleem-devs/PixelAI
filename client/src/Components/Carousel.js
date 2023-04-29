@@ -1,6 +1,6 @@
 import React from "react";
 import AliceCarousel from "react-alice-carousel";
-import { data } from "./data";
+import data from "./data";
 
 function Carousel() {
   const items = data.map((item) => {

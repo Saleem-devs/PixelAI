@@ -6,18 +6,22 @@ import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Dashboard from "./Pages/Dashboard";
 import CreateImage from "./Pages/CreateImage";
+import Snackbar from "./Components/Snackbar";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/create" element={<CreateImage />} />
-      </Routes>
-    </Router>
+    <>
+      <Router>
+        <Snackbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/create" element={<CreateImage />} />
+        </Routes>
+      </Router>
+    </>
   );
 }
 
