@@ -38,15 +38,18 @@ function CreateImage() {
     if (form.prompt || customPrompt) {
       try {
         setGeneratingImg(true);
-        const response = await fetch("http://localhost:8080/api/v1/dalle", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            prompt: form.prompt || customPrompt,
-          }),
-        });
+        const response = await fetch(
+          "https://pixelai-5c5a.onrender.com/api/v1/dalle",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              prompt: form.prompt || customPrompt,
+            }),
+          }
+        );
 
         const data = await response.json();
 
