@@ -13,21 +13,21 @@ function Nav() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full py-3 text-white bg-black">
-      <div className="page_container">
+    <nav className="sticky top-0 z-50 w-full py-3 text-black bg-[#f9fafc]">
+      <div className="container px-8 mx-auto">
         <div className="flex items-center justify-between">
           <h1 className="font-bold text-2xl">PixelAI</h1>
           {user ? (
             <button
-              className="py-1.5 px-4 rounded-md bg-primary font-semibold text-lg"
+              className="py-2 px-6 rounded-md bg-primary text-white"
               onClick={handleLogout}
             >
-              Logout
+              Log out
             </button>
           ) : (
             <Link to="/login">
-              <button className="py-1.5 px-4 rounded-md bg-primary font-semibold text-lg">
-                Login
+              <button className="py-2 px-6 rounded-md bg-primary text-white">
+                Sign in
               </button>
             </Link>
           )}

@@ -2,11 +2,24 @@ import React from "react";
 
 function Footer() {
   return (
-    <footer className="bg-black text-white  py-9">
-      <div className="page_container flex flex-col gap-5 md:flex-row justify-between items-center">
-        <div className="text-2xl font-bold">PixelAI</div>
-        <div className="text-lg">
-          © {new Date().getFullYear()} PixelAI. All rights reserved.
+    <footer className="bg-primary text-white  py-9">
+      <div className="container px-8 mx-auto ">
+        <div className="pb-8 mb-4 border-gray-300 border-b">
+          <h2 className="text-2xl font-bold">PixelAI</h2>
+          <p>High-quality images generator AI</p>
+        </div>
+        <div className="flex justify-between gap-4">
+          <p> © {new Date().getFullYear()} PixelAI. All rights reserved.</p>
+          <p>
+            Developed by{" "}
+            <a
+              href="https://twitter.com/abdsalam_saleem"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              SALEEM
+            </a>
+          </p>
         </div>
       </div>
     </footer>

@@ -2,10 +2,12 @@ import React from "react";
 
 function FeatureCard({ icon, title, description }) {
   return (
-    <div className="bg-[#f9fafc] rounded-xl p-8 my-4 flex flex-col items-center w-full md:w-[31%]">
-      <div>{icon}</div>
-      <h3 className="text-xl text-center font-bold mb-2">{title}</h3>
-      <p className="text-center text-lg">{description}</p>
+    <div className="my-4 flex flex-col w-full md:w-[31%]">
+      <div className="w-12 h-14 p-7 flex items-center justify-center rounded-md bg-primary mb-5">
+        {icon}
+      </div>
+      <h3 className="text-xl  font-semibold mb-2">{title}</h3>
+      <p className="">{description}</p>
     </div>
   );
 }

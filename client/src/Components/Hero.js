@@ -1,26 +1,35 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import HeroImg from "../Images/hero.png";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../Config/firebase";
 
 function Hero() {
+  const [user] = useAuthState(auth);
   return (
-    <main className="py-14 bg-black text-white text-center">
-      <section className="w-11/12 mx-auto md:w-2/3 lg:w-4/5">
-        <div className="flex flex-col items-center space-y-7">
-          <h1 className="font-extrabold tracking-normal text-4xl leading-9 lg:text-5xl lg:leading-10">
-            Create visually stunning images with PixelAI technology
-          </h1>
-          <p className="text-lg text-[#d4dce5] lg:text-xl">
-            Simply input your desired parameters and prompts, and let our{" "}
-            <span className="text-primary">
+    <main className="py-20   bg-[#f9fafc] text-black">
+      <section>
+        <div className="container mx-auto px-6 flex items-center justify-between gap-8 flex-col md:flex-row">
+          <div className="w-full md:w-1/2 space-y-4">
+            <h1 className="text-4xl md:text-5xl font-bold leading-10">
+              Generate Stunning AI Images
+            </h1>
+            <p className="text-base text-gray-500 md:text-lg">
+              Simply input your desired parameters and prompts, and let our
               AI-powered system generate unique and visually striking images
-            </span>{" "}
-            that are sure to leave a lasting impression.
-          </p>
-          <Link to="/create">
-            <button className="py-1.5 px-4 rounded-md bg-primary font-semibold text-lg transition-transform duration-300 ease-out transform hover:-translate-y-1">
-              Try for free →
-            </button>
-          </Link>
+              that are sure to leave a lasting impression.
+            </p>
+            <div>
+              <Link to="/dashboard">
+                <button className="py-2 px-6 rounded-md bg-primary text-white">
+                  {user ? "Dashboard" : "Get started for free"}
+                </button>
+              </Link>
+            </div>
+          </div>
+          <div className="w-full md:w-1/2 mt-10 md:mt-0">
+            <img src={HeroImg} alt="AI Generated Example" />
+          </div>
         </div>
       </section>
     </main>

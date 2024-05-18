@@ -26,3 +26,9 @@
   background-color: #666e75;
   border-radius: 5px;
 }
+
+.cta_img {
+  background: url("./Images/cta.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
